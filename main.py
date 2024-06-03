@@ -34,13 +34,21 @@ score_turtle.display_scores()
 
 #----------Create the player paddle------------#
 player_turtle = TurtlePlayerPaddle()
-player_turtle.ondrag(player_turtle.movie_paddle)
+# player_turtle.ondrag(player_turtle.movie_paddle)
 #------------------------------------------------#
 
 #----------Create the ball----------------------#
 ball_turtle = TurtleBall()
 #-----------------------------------------------#  
 
+
+#---------------Listen to the keyboard--------------#
+screen.listen()
+screen.onkeypress(player_turtle.go_left, "Left")
+screen.onkeypress(player_turtle.go_right, "Right")
+screen.onkeypress(player_turtle.go_left, "a")
+screen.onkeypress(player_turtle.go_right, "d")
+#-----------------------------------------------------#
 
 # # Update the scores
 # score_turtle.update_scores(2574, 455)
@@ -49,16 +57,20 @@ ball_turtle = TurtleBall()
 
 #--------Start the game----------#
 game_is_on = True
+ball_hit = False
 while game_is_on:
     # print(ball_turtle.position())
-    time.sleep(0.005)
+    time.sleep(0.01)
     screen.update()
     ball_turtle.move_ball()
+    print(ball_hit)
+    # print(ball_turtle.position())
 
     #Detect collision with the paddle
-    if ball_turtle.distance(player_turtle) < 70 and ball_turtle.xcor() > 310:
+    if ball_turtle.distance(player_turtle) < 35 and not ball_hit or ball_turtle.distance(player_turtle) < 35 and not ball_hit:
         print("collision")
         ball_turtle.bounce_y()
+        ball_hit = True
 
     #Detect collision with left and right walls
     if ball_turtle.xcor() > 465 or ball_turtle.xcor() < -465:
@@ -68,6 +80,9 @@ while game_is_on:
     if ball_turtle.ycor() > 300:
         ball_turtle.bounce_y()
 
+    # Reset ball_hit flag when ball is not colliding with the paddle
+    if ball_hit and ball_turtle.distance(player_turtle) >= 50:
+        ball_hit = False
 
     
     # #Detect collision with the paddles
