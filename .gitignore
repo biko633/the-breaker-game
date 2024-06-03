@@ -1,0 +1,17 @@
+# Ignore log files
+*.log
+
+# Ignore IDE-specific files
+.idea/
+.vscode/
+
+# Ignore build output
+build/
+dist/
+
+.pytest_cache/
+
+component/__pycache__/
+tests/__pycache__/
+
+*tests/
