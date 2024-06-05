@@ -11,6 +11,12 @@ class TurtleBall(Turtle):
         self.penup()
         self.goto(0, -300)
         self.numbers = [3, -3]
+
+        self.the_height = 10
+        self.the_width = 10
+
+        self.ball_y = self.ycor()
+        self.ball_x = self.xcor()
         self.x_move = -3
         self.y_move = 3
 
@@ -25,3 +31,9 @@ class TurtleBall(Turtle):
 
     def bounce_x(self):
         self.x_move *= -1
+
+    # def ball_collision(self, other):
+    #     # Axis Aligned Bounding Box
+    #     x_collision = (math.fabs(self.xcor() - other.xcor()) * 2) < (self.width + other.width)
+    #     y_collision = (math.fabs(self.ycor() - other.ycor()) * 2) < (self.height + other.height)
+    #     return (x_collision and y_collision)

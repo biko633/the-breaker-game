@@ -10,6 +10,8 @@ class TurtlePlayerPaddle(Turtle):
         self.penup()
         self.left(90)
         self.backward((self.getscreen().window_height() / 2) - 30)
+        self.the_height = 35
+        self.the_width = 115
         # self.movie_paddle(0, -370)
 
     def go_left(self):
