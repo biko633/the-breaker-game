@@ -45,10 +45,10 @@ ball_turtle = TurtleBall()
 
 #---------------Listen to the keyboard--------------#
 screen.listen()
-screen.onkeypress(player_turtle.go_left, "Left")
-screen.onkeypress(player_turtle.go_right, "Right")
-screen.onkeypress(player_turtle.go_left, "a")
-screen.onkeypress(player_turtle.go_right, "d")
+# screen.onkeypress(player_turtle.go_left, "Left")
+# screen.onkeypress(player_turtle.go_right, "Right")
+# screen.onkeypress(player_turtle.go_left, "a")
+# screen.onkeypress(player_turtle.go_right, "d")
 #-----------------------------------------------------#
 
 #--------------check for collision-------------------#
@@ -70,9 +70,24 @@ def ball_collision(T1, T2):
 game_is_on = True
 ball_hit = False
 while game_is_on: 
-    time.sleep(0.1)
+    time.sleep(0.01)
     screen.update()
     ball_turtle.move_ball()
+    # Check if the turtle is in the left or right corner
+    if player_turtle.xcor() < -400:
+        # Disable the left and right arrow keys
+        screen.onkeypress(None, "Left")
+        screen.onkeypress(None, "a")
+        
+    elif player_turtle.xcor() > 400:
+        screen.onkeypress(None, "Right")
+        screen.onkeypress(None, "d")
+    else:
+        # Enable the left and right arrow keys
+        screen.onkeypress(player_turtle.go_left, "Left")
+        screen.onkeypress(player_turtle.go_right, "Right")
+        screen.onkeypress(player_turtle.go_left, "a")
+        screen.onkeypress(player_turtle.go_right, "d")
 
     # Detect collision with the paddle
     if ball_collision(ball_turtle, player_turtle) and not ball_hit:
@@ -81,11 +96,11 @@ while game_is_on:
         ball_turtle.bounce_y()
 
     #Detect collision with left and right walls
-    if ball_turtle.xcor() > 465 or ball_turtle.xcor() < -465:
+    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
         ball_turtle.bounce_x()
 
     #Detect collision with top wall
-    if ball_turtle.ycor() > 300:
+    if ball_turtle.ycor() > 305:
         ball_turtle.bounce_y()
 
     # Reset ball_hit flag when ball is not colliding with the paddle

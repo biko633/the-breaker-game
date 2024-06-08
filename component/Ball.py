@@ -31,9 +31,3 @@ class TurtleBall(Turtle):
 
     def bounce_x(self):
         self.x_move *= -1
-
-    # def ball_collision(self, other):
-    #     # Axis Aligned Bounding Box
-    #     x_collision = (math.fabs(self.xcor() - other.xcor()) * 2) < (self.width + other.width)
-    #     y_collision = (math.fabs(self.ycor() - other.ycor()) * 2) < (self.height + other.height)
-    #     return (x_collision and y_collision)
