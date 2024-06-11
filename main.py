@@ -42,24 +42,109 @@ player_turtle = TurtlePlayerPaddle()
 ball_turtle = TurtleBall()
 #-----------------------------------------------#  
 
-
 #---------------Listen to the keyboard--------------#
 screen.listen()
-# screen.onkeypress(player_turtle.go_left, "Left")
-# screen.onkeypress(player_turtle.go_right, "Right")
-# screen.onkeypress(player_turtle.go_left, "a")
-# screen.onkeypress(player_turtle.go_right, "d")
 #-----------------------------------------------------#
 
-#--------------check for collision-------------------#
+#-------------------Functions------------------------#
+
+# Paddle movement
+def paddle_movement():
+    global player_turtle, screen
+    # Check if the turtle is in the left or right corner
+    if player_turtle.xcor() < -400:
+        # Disable the left and right arrow keys
+        screen.onkeypress(None, "Left")
+        screen.onkeypress(None, "a")
+        return
+        
+    elif player_turtle.xcor() > 400:
+        screen.onkeypress(None, "Right")
+        screen.onkeypress(None, "d")
+        return
+    else:
+        # Enable the left and right arrow keys
+        screen.onkeypress(player_turtle.go_left, "Left")
+        screen.onkeypress(player_turtle.go_right, "Right")
+        screen.onkeypress(player_turtle.go_left, "a")
+        screen.onkeypress(player_turtle.go_right, "d")
+        return
+    
+
+# Ball collision
 def ball_collision(T1, T2):
     x_collision = (math.fabs(T1.xcor() - T2.xcor()) * 2) < (T1.the_width + T2.the_width)
     y_collision = (math.fabs(T1.ycor() - T2.ycor()) * 2) < (T1.the_height + T2.the_height)
     # print(f"this is x =   {x_collision}")
     # print(f"this is y =   {y_collision}")
-
     return (x_collision and y_collision)
-#-----------------------------------------------------#
+
+
+# Ball collision with the paddle
+def ball_paddle_collision():
+    global ball_turtle, player_turtle, ball_hit
+
+    # Detect ball collision with the paddle
+    if ball_collision(ball_turtle, player_turtle) and not ball_hit:
+        # Detect ball collision with the paddle left side
+        if player_turtle.xcor() - ball_turtle.xcor() >= 0:
+            # Detect player position right
+            if player_turtle.xcor() >= 0:
+                ball_hit = True
+                print("the ball is colliding with the paddle player right ball left 1")
+                ball_turtle.bounce_y()
+                ball_turtle.bounce_x()
+                return
+            # Detect player position left
+            else:
+                ball_hit = True
+                print("the ball is colliding with the paddle player left ball left 2")
+                ball_turtle.bounce_y()
+                return
+
+        # Detect ball collision with the paddle right side
+        else:
+            # Detect player position right
+            if player_turtle.xcor() >= 0:
+                ball_hit = True
+                print("the ball is colliding with the paddle player right ball right 3")
+                ball_turtle.bounce_y()
+                return
+            # Detect player position left
+            else:
+                ball_hit = True
+                print("the ball is colliding with the paddle player left ball right 4")
+                ball_turtle.bounce_y()
+                ball_turtle.bounce_x()
+                return
+
+
+# Ball collision with left and right walls
+def ball_side_walls_collision():
+    global ball_turtle
+        #Detect collision with left and right walls
+    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
+        ball_turtle.bounce_x()
+        return
+    
+
+# Ball collision with top wall
+def ball_top_wall_collision():
+    global ball_turtle
+        #Detect collision with top wall
+    if ball_turtle.ycor() > 305:
+        ball_turtle.bounce_y()
+        return
+    
+
+# reset ball_hit flag when ball is not colliding with the paddle
+def reset_ball_hit():
+    global ball_hit
+        # Reset ball_hit flag when ball is not colliding with the paddle
+    if ball_hit and ball_turtle.distance(player_turtle) >= 50:
+        ball_hit = False
+        return
+#------------------------------------------------------#
 
 # # Update the scores
 # score_turtle.update_scores(2574, 455)
@@ -73,71 +158,17 @@ while game_is_on:
     time.sleep(0.01)
     screen.update()
     ball_turtle.move_ball()
-    # Check if the turtle is in the left or right corner
-    if player_turtle.xcor() < -400:
-        # Disable the left and right arrow keys
-        screen.onkeypress(None, "Left")
-        screen.onkeypress(None, "a")
-        
-    elif player_turtle.xcor() > 400:
-        screen.onkeypress(None, "Right")
-        screen.onkeypress(None, "d")
-    else:
-        # Enable the left and right arrow keys
-        screen.onkeypress(player_turtle.go_left, "Left")
-        screen.onkeypress(player_turtle.go_right, "Right")
-        screen.onkeypress(player_turtle.go_left, "a")
-        screen.onkeypress(player_turtle.go_right, "d")
 
-    # Detect ball collision with the paddle
-    if ball_collision(ball_turtle, player_turtle) and not ball_hit:
-        # Detect ball collision with the paddle left side
-        if player_turtle.xcor() - ball_turtle.xcor() >= 0:
-            # Detect player position right
-            if player_turtle.xcor() >= 0:
-                ball_hit = True
-                print("the ball is colliding with the paddle player right ball left 1")
-                ball_turtle.bounce_y()
-                ball_turtle.bounce_x()
-            # Detect player position left
-            else:
-                ball_hit = True
-                print("the ball is colliding with the paddle player left ball left 2")
-                ball_turtle.bounce_y()
+    paddle_movement()
 
-        # Detect ball collision with the paddle right side
-        else:
-            # Detect player position right
-            if player_turtle.xcor() >= 0:
-                ball_hit = True
-                print("the ball is colliding with the paddle player right ball right 3")
-                ball_turtle.bounce_y()
-            # Detect player position left
-            else:
-                ball_hit = True
-                print("the ball is colliding with the paddle player left ball right 4")
-                ball_turtle.bounce_y()
-                ball_turtle.bounce_x()
+    ball_paddle_collision()
 
+    ball_side_walls_collision()
 
-        # print(player_turtle.position())
-        # print(ball_turtle.position())
-        # ball_hit = True
-        # print("the ball is colliding with the paddle")
-        # ball_turtle.bounce_y()
-        # ball_turtle.bounce_x()
+    ball_top_wall_collision()
 
-    #Detect collision with left and right walls
-    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
-        ball_turtle.bounce_x()
+    reset_ball_hit()
 
-    #Detect collision with top wall
-    if ball_turtle.ycor() > 305:
-        ball_turtle.bounce_y()
-
-    # Reset ball_hit flag when ball is not colliding with the paddle
-    if ball_hit and ball_turtle.distance(player_turtle) >= 50:
-        ball_hit = False
 
 #--------------------------------#
 
