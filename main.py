@@ -94,7 +94,7 @@ while game_is_on:
         # Detect ball collision with the paddle left side
         if player_turtle.xcor() - ball_turtle.xcor() >= 0:
             # Detect player position right
-            if player_turtle.xcor() > 0:
+            if player_turtle.xcor() >= 0:
                 ball_hit = True
                 print("the ball is colliding with the paddle player right ball left 1")
                 ball_turtle.bounce_y()
@@ -104,20 +104,20 @@ while game_is_on:
                 ball_hit = True
                 print("the ball is colliding with the paddle player left ball left 2")
                 ball_turtle.bounce_y()
-                ball_turtle.bounce_x()
 
         # Detect ball collision with the paddle right side
         else:
             # Detect player position right
-            if player_turtle.xcor() > 0:
+            if player_turtle.xcor() >= 0:
                 ball_hit = True
                 print("the ball is colliding with the paddle player right ball right 3")
                 ball_turtle.bounce_y()
             # Detect player position left
             else:
                 ball_hit = True
-                print("the ball is colliding with the paddle right 4")
+                print("the ball is colliding with the paddle player left ball right 4")
                 ball_turtle.bounce_y()
+                ball_turtle.bounce_x()
 
 
         # print(player_turtle.position())
