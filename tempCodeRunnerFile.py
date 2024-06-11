@@ -1,1 +1,1 @@
-# player_turtle.ondrag(player_turtle.movie_paddle)
+ball_turtle.bounce_x()
