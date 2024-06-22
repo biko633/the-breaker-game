@@ -1,1 +1,0 @@
-ball_turtle.bounce_x()

@@ -3,15 +3,19 @@ from component.Scores import TurtleScores
 from component.Background import TurtleBackground
 from component.Player_paddle import TurtlePlayerPaddle
 from component.Ball import TurtleBall
+from component.UserInterface import TurtleUserInterface
+from Screen_Info import width, height
 import time
 import math
 
 # ----------------Screen setup------------------------#
-screen_width = 1000
-screen_height = 800
+screen_width = width
+screen_height = height
 
 # Set up the screen
 screen = Screen()
+screen.register_shape("images/start.gif")
+screen.register_shape("images/exit.gif")
 screen.setup(width=screen_width, height=screen_height)
 screen.tracer(0)
 
@@ -41,6 +45,12 @@ player_turtle = TurtlePlayerPaddle()
 #----------Create the ball----------------------#
 ball_turtle = TurtleBall()
 #-----------------------------------------------#  
+
+#----------Create the user interface-------------#
+start_button_turtle = TurtleUserInterface(x=700, y=600, type="start")
+exit_button_turtle = TurtleUserInterface(x=700, y=600, type="exit")
+
+#-----------------------------------------------#
 
 #---------------Listen to the keyboard--------------#
 screen.listen()
