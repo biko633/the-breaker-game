@@ -22,6 +22,9 @@ class TurtlePlayerPaddle(Turtle):
         new_x = self.xcor() + 20
         self.goto(new_x, self.ycor())
 
+    def paddle_reset(self):
+        self.goto(0, -370)
+
     # def movie_paddle(self, x, y):
     #     # check if the paddle is out of bounds left or right
     #     if self.xcor() < -390:

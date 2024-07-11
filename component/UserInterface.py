@@ -1,4 +1,5 @@
 from turtle import Turtle
+import turtle
 from Screen_Info import width, height
 from component.utilities.Class_utility import get_all_instances
 
@@ -21,25 +22,47 @@ class TurtleUserInterface(Turtle):
             self.goto(-200, -200)
             print("start is ")
             print(self.pos())
+            self.onclick(self.click)
         elif self.type == "exit":
             self.shape("images/exit.gif")
             self.goto(190, -200)
             print("exit is ")
             print(self.pos())
-        else :
+            self.onclick(self.click)
+        elif self.type == "game_over":
+            self.shape("images/game_over.gif")
+            self.goto(0, 0)
+            print("game over is ")
+            print(self.pos())
+        else:
             self.shape("images/again.gif")
             self.goto(-200, -200)
             print("again is ")
             print(self.pos())
+            self.onclick(self.click)
         self.shapesize(stretch_wid=2, stretch_len=8)
-        self.onclick(self.click)
 
     def click(self, x, y):
         self.hideturtle()
         self.is_hidden = True
+        if self.type == "exit":
+            self.exit_game()
+        elif self.type == "start":
+            print("this is start")
+            self.hide_all_buttons()
+            return True
+        elif self.type == "again":
+            self.hide_all_buttons()
+            return True
+        else:
+            print("this is not a button")
+            return False
+
+    def exit_game(self):
+        turtle.bye()
+
+    def hide_all_buttons(self):
         all_buttons = get_all_instances(TurtleUserInterface)
         for button in all_buttons:
             if button.is_hidden == False:
                 button.hideturtle()
-                button.write("Thank you!", align='center', font=('Arial', 18, 'bold'))
-        self.write("Thank you!", align='center', font=('Arial', 18, 'bold'))
