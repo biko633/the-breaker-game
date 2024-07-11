@@ -9,75 +9,15 @@ from Screen_Info import width, height
 import time
 import math
 
-# ----------------Screen setup------------------------#
-screen_width = width
-screen_height = height
+#-------------------Functions------------------------#
 
-# Set up the screen
-screen = Screen()
-screen.register_shape("images/start.gif")
-screen.register_shape("images/exit.gif")
-screen.register_shape("images/game_over.gif")
-screen.register_shape("images/again.gif")
-screen.setup(width=screen_width, height=screen_height)
-screen.tracer(0)
-
-# Set the background image
-screen.bgpic("images/91657.gif")
-
-# Disable the resizing of the screen
-screen.cv._rootwindow.resizable(False, False)
-# ----------------------------------------#
-
-# ----------Create the background----------
-background_turtle = TurtleBackground()
-# ------------------------------------------#
-
-# ----------Create the score turtle----------#
-score_turtle = TurtleScores()
-
-#Display the scores
-score_turtle.display_scores()
-#--------------------------------------------#
-
-# ----------Create the lives turtle----------#
-lives_turtle = TurtleLives()
-
-#Display the lives
-lives_turtle.display_lives()
-#--------------------------------------------#
-
-#----------Create the player paddle------------#
-player_turtle = TurtlePlayerPaddle()
-# player_turtle.ondrag(player_turtle.movie_paddle)
-#------------------------------------------------#
-
-#----------Create the ball----------------------#
-ball_turtle = TurtleBall()
-#-----------------------------------------------#  
-
-#---------------set the game on to true-------------------#
+# set the game on to true
 def set_game_on(x, y, turtle):
     global game_is_on, start_button_turtle, again_button_turtle, lives_turtle
     lives_turtle.reset_lives()
     game_is_on = turtle.click(x, y)
 
 #--------------------------------------------------#
-
-#----------Create the user interface-------------#
-start_button_turtle = TurtleUserInterface(x=700, y=600, type="start")
-exit_button_turtle = TurtleUserInterface(x=700, y=600, type="exit")
-
-start_button_turtle.onclick(lambda x, y: set_game_on(x, y, start_button_turtle), add=False, btn=1)
-
-
-#-----------------------------------------------#
-
-#---------------Listen to the keyboard--------------#
-screen.listen()
-#-----------------------------------------------------#
-
-#-------------------Functions------------------------#
 
 # Paddle movement
 def paddle_movement():
@@ -108,6 +48,8 @@ def stop_paddle_movement():
     screen.onkeypress(None, "d")
     return
 
+#--------------------------------------------------#
+
 # Ball collision
 def ball_collision(T1, T2):
     x_collision = (math.fabs(T1.xcor() - T2.xcor()) * 2) < (T1.the_width + T2.the_width)
@@ -115,6 +57,34 @@ def ball_collision(T1, T2):
     # print(f"this is x =   {x_collision}")
     # print(f"this is y =   {y_collision}")
     return (x_collision and y_collision)
+
+# Ball collision with left and right walls
+def ball_side_walls_collision():
+    global ball_turtle
+        #Detect collision with left and right walls
+    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
+        ball_turtle.bounce_x()
+        return
+    
+
+# Ball collision with top wall
+def ball_top_wall_collision():
+    global ball_turtle
+        #Detect collision with top wall
+    if ball_turtle.ycor() > 305:
+        ball_turtle.bounce_y()
+        return
+    
+
+# reset ball_hit flag when ball is not colliding with the paddle
+def reset_ball_hit():
+    global ball_hit
+        # Reset ball_hit flag when ball is not colliding with the paddle
+    if ball_hit and ball_turtle.distance(player_turtle) >= 50:
+        ball_hit = False
+        return
+
+#--------------------------------------------------#
 
 
 # Ball collision with the paddle
@@ -156,32 +126,6 @@ def ball_paddle_collision():
                 return
 
 
-# Ball collision with left and right walls
-def ball_side_walls_collision():
-    global ball_turtle
-        #Detect collision with left and right walls
-    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
-        ball_turtle.bounce_x()
-        return
-    
-
-# Ball collision with top wall
-def ball_top_wall_collision():
-    global ball_turtle
-        #Detect collision with top wall
-    if ball_turtle.ycor() > 305:
-        ball_turtle.bounce_y()
-        return
-    
-
-# reset ball_hit flag when ball is not colliding with the paddle
-def reset_ball_hit():
-    global ball_hit
-        # Reset ball_hit flag when ball is not colliding with the paddle
-    if ball_hit and ball_turtle.distance(player_turtle) >= 50:
-        ball_hit = False
-        return
-
 # Paddle missing ball  
 def paddle_missing():
     global player_turtle, ball_turtle, lives_turtle, game_is_on, again_button_turtle
@@ -205,12 +149,7 @@ def paddle_missing():
 
 # lives_turtle.update_lives()
 
-#--------Variables----------#
-# game_is_on is in TurtleUserInterface
-game_is_on = False
-app_on = True
-ball_hit = False
-#--------------------------------#
+
 
 #---------Running the game ----------------------#
 
@@ -239,7 +178,79 @@ def start_game():
         paddle_missing()
 #-------------------------------------------------#
 
-while app_on:
-    start_game()
+def main():
+    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, again_button_turtle, background_turtle, exit_button_turtle, lives_turtle
+    # ----------------Screen setup------------------------#
+    screen_width = width
+    screen_height = height
 
-screen.mainloop()
+    # Set up the screen
+    screen = Screen()
+    screen.register_shape("images/start.gif")
+    screen.register_shape("images/exit.gif")
+    screen.register_shape("images/game_over.gif")
+    screen.register_shape("images/again.gif")
+    screen.setup(width=screen_width, height=screen_height)
+    screen.tracer(0)
+
+    # Set the background image
+    screen.bgpic("images/91657.gif")
+
+    # Disable the resizing of the screen
+    screen.cv._rootwindow.resizable(False, False)
+    # ----------------------------------------#
+
+    # ----------Create the background----------
+    background_turtle = TurtleBackground()
+    # ------------------------------------------#
+
+    # ----------Create the score turtle----------#
+    score_turtle = TurtleScores()
+
+    #Display the scores
+    score_turtle.display_scores()
+    #--------------------------------------------#
+
+    # ----------Create the lives turtle----------#
+    lives_turtle = TurtleLives()
+
+    #Display the lives
+    lives_turtle.display_lives()
+    #--------------------------------------------#
+
+    #----------Create the player paddle------------#
+    player_turtle = TurtlePlayerPaddle()
+    # player_turtle.ondrag(player_turtle.movie_paddle)
+    #------------------------------------------------#
+
+    #----------Create the ball----------------------#
+    ball_turtle = TurtleBall()
+    #-----------------------------------------------#  
+
+    #----------Create the user interface-------------#
+    start_button_turtle = TurtleUserInterface(x=700, y=600, type="start")
+    exit_button_turtle = TurtleUserInterface(x=700, y=600, type="exit")
+
+    start_button_turtle.onclick(lambda x, y: set_game_on(x, y, start_button_turtle), add=False, btn=1)
+
+
+    #-----------------------------------------------#
+
+    #---------------Listen to the keyboard--------------#
+    screen.listen()
+    #-----------------------------------------------------#
+
+    #--------Variables----------#
+    # game_is_on is in TurtleUserInterface
+    game_is_on = False
+    app_on = True
+    ball_hit = False
+    #--------------------------------#
+
+    while app_on:
+        start_game()
+
+    screen.mainloop()
+
+if __name__ == "__main__":
+    main()
