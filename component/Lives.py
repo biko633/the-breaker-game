@@ -21,10 +21,9 @@ class TurtleLives(Turtle):
         self.clear()
         self.penup()
         self.home()
-        self.backward((self.getscreen().window_width() / 2) - 440)
         self.right(90)
         self.backward((self.getscreen().window_height() / 2) - 35)
-        self.write(f"Lives: {self.lives}", align="left", font=("Arial", 20, "bold"))
+        self.write(f"Lives: {self.lives}", align="right", font=("Arial", 20, "bold"))
 
     def reset_lives(self):
         self.lives = 3

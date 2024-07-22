@@ -4,6 +4,7 @@ from component.Lives import TurtleLives
 from component.Background import TurtleBackground
 from component.Player_paddle import TurtlePlayerPaddle
 from component.Ball import TurtleBall
+from component.bricks import TurtleBricks
 from component.UserInterface import TurtleUserInterface
 from Screen_Info import width, height
 import time
@@ -179,7 +180,7 @@ def start_game():
 #-------------------------------------------------#
 
 def main():
-    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, again_button_turtle, background_turtle, exit_button_turtle, lives_turtle
+    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, again_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle
     # ----------------Screen setup------------------------#
     screen_width = width
     screen_height = height
@@ -226,6 +227,16 @@ def main():
     #----------Create the ball----------------------#
     ball_turtle = TurtleBall()
     #-----------------------------------------------#  
+
+    #----------Create the breaks-------------#
+    # breaks_turtle = TurtleBricks()
+
+    # Add more bricks to the game
+    for i in range(0, 18):
+        brick = TurtleBricks()
+        brick.setx(-451.51 + (51 * i))
+
+    #-----------------------------------------------#
 
     #----------Create the user interface-------------#
     start_button_turtle = TurtleUserInterface(x=700, y=600, type="start")
