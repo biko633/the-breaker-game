@@ -10,6 +10,9 @@ from Screen_Info import width, height
 import time
 import math
 
+screen_width = width
+screen_height = height
+
 #-------------------Functions------------------------#
 
 # set the game on to true
@@ -22,15 +25,15 @@ def set_game_on(x, y, turtle):
 
 # Paddle movement
 def paddle_movement():
-    global player_turtle, screen
+    global player_turtle, screen, screen_width
     # Check if the turtle is in the left or right corner
-    if player_turtle.xcor() < -400:
+    if player_turtle.xcor() < screen_width / -2 + 80:
         # Disable the left and right arrow keys
         screen.onkeypress(None, "Left")
         screen.onkeypress(None, "a")
         return
         
-    elif player_turtle.xcor() > 400:
+    elif player_turtle.xcor() > screen_width / 2 - 80:
         screen.onkeypress(None, "Right")
         screen.onkeypress(None, "d")
         return
@@ -59,20 +62,20 @@ def ball_collision(T1, T2):
     # print(f"this is y =   {y_collision}")
     return (x_collision and y_collision)
 
-# Ball collision with left and right walls
+# Ball collision with right and left walls
 def ball_side_walls_collision():
-    global ball_turtle
-        #Detect collision with left and right walls
-    if ball_turtle.xcor() > 460 or ball_turtle.xcor() < -465:
+    global ball_turtle, screen_width
+        #Detect collision with right and left walls
+    if ball_turtle.xcor() > (screen_width / 2) - 30 or ball_turtle.xcor() < (screen_width / -2) + 26:
         ball_turtle.bounce_x()
         return
     
 
 # Ball collision with top wall
 def ball_top_wall_collision():
-    global ball_turtle
+    global ball_turtle, screen_height
         #Detect collision with top wall
-    if ball_turtle.ycor() > 305:
+    if ball_turtle.ycor() > screen_height / 2 - 75:
         ball_turtle.bounce_y()
         return
     
@@ -129,7 +132,7 @@ def ball_paddle_collision():
 
 # Paddle missing ball  
 def paddle_missing():
-    global player_turtle, ball_turtle, lives_turtle, game_is_on, again_button_turtle
+    global player_turtle, ball_turtle, lives_turtle, game_is_on, again_button_turtle, screen_height
     if lives_turtle.lives == 0:
         game_is_on = False
         game_over_turtle = TurtleUserInterface(x=700, y=600, type="game_over")
@@ -138,7 +141,7 @@ def paddle_missing():
         again_button_turtle.onclick(lambda x, y: set_game_on(x, y, again_button_turtle), add=False, btn=1)
         time.sleep(0.01)
         screen.update()
-    elif ball_turtle.ycor() < -380:
+    elif ball_turtle.ycor() < (screen_height / -2) - 20:
         lives_turtle.update_lives()
         ball_turtle.reset_ball()
         player_turtle.paddle_reset()
@@ -180,10 +183,8 @@ def start_game():
 #-------------------------------------------------#
 
 def main():
-    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, again_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle
+    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, again_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle, screen_height, screen_width
     # ----------------Screen setup------------------------#
-    screen_width = width
-    screen_height = height
 
     # Set up the screen
     screen = Screen()

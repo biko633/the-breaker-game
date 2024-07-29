@@ -30,8 +30,12 @@ class TurtleUserInterface(Turtle):
             print(self.pos())
             self.onclick(self.click)
         elif self.type == "game_over":
-            self.shape("images/game_over.gif")
+            self.hideturtle()
+            self.color("#de1b4a")
             self.goto(0, 0)
+            self.write("Game Over", align="center", font=("Arial", 40, "bold"))
+            # self.shape("images/game_over.gif")
+            # self.goto(0, 0)
             print("game over is ")
             print(self.pos())
         else:
@@ -51,7 +55,7 @@ class TurtleUserInterface(Turtle):
             print("this is start")
             self.hide_all_buttons()
             return True
-        elif self.type == "again":
+        elif self.type == "again":         
             self.hide_all_buttons()
             return True
         else:
@@ -64,5 +68,5 @@ class TurtleUserInterface(Turtle):
     def hide_all_buttons(self):
         all_buttons = get_all_instances(TurtleUserInterface)
         for button in all_buttons:
-            if button.is_hidden == False:
-                button.hideturtle()
+            button.clear()
+            button.hideturtle()
