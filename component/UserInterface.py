@@ -19,13 +19,13 @@ class TurtleUserInterface(Turtle):
         self.type = type
         if self.type == "start":
             self.shape("images/start.gif")
-            self.goto(-200, -200)
+            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
             print("start is ")
             print(self.pos())
             self.onclick(self.click)
         elif self.type == "exit":
             self.shape("images/exit.gif")
-            self.goto(190, -200)
+            self.goto(x / 3 + 50, y / 3 * -1 - 50) 
             print("exit is ")
             print(self.pos())
             self.onclick(self.click)
@@ -39,9 +39,9 @@ class TurtleUserInterface(Turtle):
             print("game over is ")
             print(self.pos())
         else:
-            self.shape("images/again.gif")
-            self.goto(-200, -200)
-            print("again is ")
+            self.shape("images/restart.gif")
+            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
+            print("restart is ")
             print(self.pos())
             self.onclick(self.click)
         self.shapesize(stretch_wid=2, stretch_len=8)
@@ -55,7 +55,7 @@ class TurtleUserInterface(Turtle):
             print("this is start")
             self.hide_all_buttons()
             return True
-        elif self.type == "again":         
+        elif self.type == "restart":         
             self.hide_all_buttons()
             return True
         else:
