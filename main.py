@@ -8,7 +8,6 @@ from component.bricks import TurtleBricks
 from component.UserInterface import TurtleUserInterface
 from Screen_Info import width, height
 import time
-import math
 
 screen_width = width
 screen_height = height
@@ -58,20 +57,11 @@ def stop_paddle_movement():
 
 #--------------------------------------------------#
 
-# Ball collision
-# def ball_collision(T1, T2):
-#     x_collision = (math.fabs(T1.xcor() - T2.xcor()) * 2) < (T1.the_width + T2.the_width)
-#     y_collision = (math.fabs(T1.ycor() - T2.ycor()) * 2) < (T1.the_height + T2.the_height)
-#     # print(f"this is x =   {x_collision}")
-#     # print(f"this is y =   {y_collision}")
-#     return (x_collision and y_collision)
-
 # Ball collision with right and left walls
 def ball_side_walls_collision():
     global ball_turtle, screen_width
         #Detect collision with right and left walls
     if ball_turtle.xcor() > (screen_width / 2) - 30 or ball_turtle.xcor() < (screen_width / -2) + 26:
-        # ball_turtle.bounce_x()
         ball_turtle.bounce("side")
         return
     
@@ -82,8 +72,6 @@ def ball_top_wall_collision():
         #Detect collision with top wall
     if ball_turtle.ycor() > screen_height / 2 - 70:
         ball_turtle.bounce("top")
-        # ball_turtle.setheading(360 - ball_turtle.heading())
-        # ball_turtle.bounce_y()
         return
     
 
@@ -125,44 +113,6 @@ def hit_bricks(brick_dictionary):
             break
 
 #--------------------------------------------------#
-# Ball collision with the paddle
-# def ball_paddle_collision():
-#     global ball_turtle, player_turtle, ball_hit
-
-#     # Detect ball collision with the paddle
-#     if ball_collision(ball_turtle, player_turtle) and not ball_hit:
-#         # Detect ball collision with the paddle left side
-#         if player_turtle.xcor() - ball_turtle.xcor() >= 0:
-#             # Detect player position right
-#             if player_turtle.xcor() >= 0:
-#                 ball_hit = True
-#                 print("the ball is colliding with the paddle player right ball left 1")
-#                 ball_turtle.bounce_y()
-#                 ball_turtle.bounce_x()
-#                 return
-#             # Detect player position left
-#             else:
-#                 ball_hit = True
-#                 print("the ball is colliding with the paddle player left ball left 2")
-#                 ball_turtle.bounce_y()
-#                 return
-
-#         # Detect ball collision with the paddle right side
-#         else:
-#             # Detect player position right
-#             if player_turtle.xcor() >= 0:
-#                 ball_hit = True
-#                 print("the ball is colliding with the paddle player right ball right 3")
-#                 ball_turtle.bounce_y()
-#                 return
-#             # Detect player position left
-#             else:
-#                 ball_hit = True
-#                 print("the ball is colliding with the paddle player left ball right 4")
-#                 ball_turtle.bounce_y()
-#                 ball_turtle.bounce_x()
-#                 return
-
 
 # Paddle missing ball  
 def paddle_missing():
@@ -206,7 +156,6 @@ def start_game():
         ball_turtle.move_ball()
         paddle_movement()
 
-        # ball_paddle_collision()
         if check_collision_paddle(player_turtle) and not ball_hit:
             ball_turtle.bounce("paddle")
 
@@ -229,7 +178,6 @@ def main():
     screen = Screen()
     screen.register_shape("images/start.gif")
     screen.register_shape("images/exit.gif")
-    # screen.register_shape("images/game_over.gif")
     screen.register_shape("images/restart.gif")
     screen.setup(width=screen_width, height=screen_height)
     screen.tracer(0)
@@ -261,7 +209,6 @@ def main():
 
     #----------Create the player paddle------------#
     player_turtle = TurtlePlayerPaddle()
-    # player_turtle.ondrag(player_turtle.movie_paddle)
     #------------------------------------------------#
 
     #----------Create the ball----------------------#
@@ -269,24 +216,7 @@ def main():
     #-----------------------------------------------#  
 
     #----------Create the breaks-------------#
-    # breaks_turtle = TurtleBricks()
-
-    # Add more bricks to the game
-    # for i in range(0, 18):
-    #     brick = TurtleBricks()
-    #     brick.setx(-451.51 + (51 * i))
-
-    # for i in range(0, 19):
-    #     brick = TurtleBricks()
-    #     # x = -462
-    #     # print(brick.xcor())
-    #     brick.setx(brick.xcor() + (51 * i))
-    #     print(screen_width // 51)
-
     bricks_turtle = TurtleBricks(lines=3, size=screen_width // 51, width=screen_width, height=screen_height)
-    # print("grgrmnodvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
-    # print(list(bricks_turtle.brick_list.keys())[0].xcor())
-
     #-----------------------------------------------#
 
     #----------Create the user interface-------------#
@@ -294,8 +224,6 @@ def main():
     exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit")
 
     start_button_turtle.onclick(lambda x, y: begin_game(x, y, start_button_turtle), add=False, btn=1)
-
-
     #-----------------------------------------------#
 
     #---------------Listen to the keyboard--------------#
@@ -303,7 +231,6 @@ def main():
     #-----------------------------------------------------#
 
     #--------Variables----------#
-    # game_is_on is in TurtleUserInterface
     game_is_on = False
     app_on = True
     ball_hit = False

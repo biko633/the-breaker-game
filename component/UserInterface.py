@@ -1,6 +1,5 @@
 from turtle import Turtle
 import turtle
-from Screen_Info import width, height
 from component.utilities.Class_utility import get_all_instances
 
 # x = 700 and y = 600
@@ -34,8 +33,6 @@ class TurtleUserInterface(Turtle):
             self.color("#de1b4a")
             self.goto(0, 0)
             self.write("Game Over", align="center", font=("Arial", 40, "bold"))
-            # self.shape("images/game_over.gif")
-            # self.goto(0, 0)
             print("game over is ")
             print(self.pos())
         else:

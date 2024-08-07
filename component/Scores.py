@@ -15,15 +15,10 @@ class TurtleScores(Turtle):
         self.penup()
         self.load_high_scores()
 
-
-
-
-
     def save_scores(self):
         with open("component/scores.json", "w") as f:
             json.dump({"high_score": self.high_score}, f)
-
-    
+ 
     def load_high_scores(self):
         if os.path.exists("component/scores.json"):
             with open("component/scores.json", "r") as f:

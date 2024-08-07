@@ -1,4 +1,3 @@
-from cgitb import reset
 from turtle import Turtle
 from random import choice
 import time
@@ -14,45 +13,23 @@ class TurtleBall(Turtle):
         self.reset_position = (0, (self.getscreen().window_height() / 2) * -1 + 100)
         self.goto(self.reset_position)
 
-        
-
         # first one left second one right
-        self.ball_direction = (45, 135)
-        self.chosen_direction = choice(self.ball_direction)
+        # 45 to 135
+        self.ball_direction = (range(45, 135))
 
-        # self.the_height = 10
-        # self.the_width = 10
-
-        # self.can_bounce = True
         self.last_bounce_time = 0
 
-        # self.ball_y = self.ycor()
-        # self.ball_x = self.xcor()
-        # self.x_move = self.chosen_direction[0]
-        # self.y_move = self.chosen_direction[1]
-
-        self.setheading(self.chosen_direction)
-
+        self.setheading(choice(self.ball_direction))
 
     def move_ball(self):
         self.forward(5)
-        # new_x = self.xcor() + self.x_move
-        # new_y = self.ycor() + self.y_move
-        # self.goto(new_x, new_y)
-
-    def bounce_y(self):
-        self.y_move *= -1
-
-    def bounce_x(self):
-        self.x_move *= -1
 
     def bounce_ball(self):
         self.setheading(360 - self.heading())
 
     def reset_ball(self):
         self.goto(self.reset_position)
-        self.setheading(self.chosen_direction)
-        # self.bounce_y()
+        self.setheading(choice(self.ball_direction))
 
     def bounce(self, context):
         # paddle

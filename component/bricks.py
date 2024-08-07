@@ -1,8 +1,5 @@
 from turtle import Turtle
-from Screen_Info import width, height
-from component.utilities.Class_utility import get_all_instances
 import random
-
 
 # Total number of bricks that can fit in the screen width = (Total width / Width of each brick) + ((Total width / Width of each brick) - 1)
 
@@ -25,17 +22,6 @@ class TurtleBricks():
 
         self.build_bricks(self.size, self.lines)
 
-        # self.speed(1)
-        # self.shape("square")
-        # self.color(self.generate_random_color())
-        # self.shapesize(stretch_wid=1, stretch_len=2.5)
-        # self.penup()
-        # self.goto(self.start_x, self.start_y)
-        # print(self.pos())
-        # (-451.51,306.51)
-        # width = 102 half = 51
-        # height = 42 half = 21
-
     def build_bricks(self, size, lines):
         for line in range(0 , lines):
             for order in range(0, size):
@@ -53,7 +39,6 @@ class TurtleBricks():
         self.count = 0
         self.build_bricks(self.size, self.lines)
 
-
     def generate_brick(self, number, line):
         self.brick = Turtle()
         self.brick.speed(1)
@@ -63,7 +48,6 @@ class TurtleBricks():
         self.brick.penup()
         self.brick.goto(self.start_x + (51 * number), self.start_y - (21 * line))
         return self.brick
-
 
     def generate_random_color(self):
         colors = ["#059212", "#06D001", "#9BEC00", "#F3FF90", "#FDA403", "#E8751A", "#898121", "#E5C287", "#51EAEA", "#AA26DA", "#36BA98", "#FFFF80", "#B784B7", "#F8DE22", "#D4D925"]
