@@ -16,11 +16,15 @@ screen_height = height
 #-------------------Functions------------------------#
 
 # set the game on to true
-def set_game_on(x, y, turtle):
-    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle
+def restart_game(x, y, turtle):
+    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle
     lives_turtle.reset_lives()
+    bricks_turtle.reset_bricks()
     game_is_on = turtle.click(x, y)
 
+def begin_game(x, y, turtle):
+    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle
+    game_is_on = turtle.click(x, y)
 #--------------------------------------------------#
 
 # Paddle movement
@@ -76,7 +80,7 @@ def ball_side_walls_collision():
 def ball_top_wall_collision():
     global ball_turtle, screen_height
         #Detect collision with top wall
-    if ball_turtle.ycor() > screen_height / 2 - 75:
+    if ball_turtle.ycor() > screen_height / 2 - 70:
         ball_turtle.bounce("top")
         # ball_turtle.setheading(360 - ball_turtle.heading())
         # ball_turtle.bounce_y()
@@ -93,20 +97,34 @@ def reset_ball_hit():
 
 #--------------------------------------------------#
 
-def checkCollisonPaddle(obj):  
+# Ball collision with the paddle
+def check_collision_paddle(obj):  
   global ball_turtle                                 # \/ bottom of paddle \/ middle of paddle \/ top of paddle
-  if abs(ball_turtle.xcor() - obj.xcor()) < 75 and (obj.ycor() - 10 <= ball_turtle.ycor() <= obj.ycor() + 24) :
+  if abs(ball_turtle.xcor() - obj.xcor()) < 55 and (obj.ycor() - 10 <= ball_turtle.ycor() <= obj.ycor() + 24) :
     return True
 
   return False
 
-def checkCollisonBrick(obj):
+# Ball collision with the bricks
+def check_collision_brick(obj):
   global ball_turtle
-  if abs(ball_turtle.xcor() - obj.xcor()) < 50 and obj.ycor() <= ball_turtle.ycor() <= obj.ycor() + 10 :
-    print("colided with the brick:", obj)
+  if abs(ball_turtle.xcor() - obj.xcor()) < 40 and obj.ycor() <= ball_turtle.ycor() <= obj.ycor() + 10 :
+    print("collided with the brick:", obj)
     return True
   return False
 
+def hit_bricks(brick_dictionary):
+    global ball_turtle
+    for brick, index in brick_dictionary.items():
+        if check_collision_brick(brick):
+            ball_turtle.bounce("brick")
+            print(f"the index of the brick is -> {index}")      
+            brick.clear()
+            brick.hideturtle()
+            del brick_dictionary[brick]
+            break
+
+#--------------------------------------------------#
 # Ball collision with the paddle
 # def ball_paddle_collision():
 #     global ball_turtle, player_turtle, ball_hit
@@ -154,7 +172,7 @@ def paddle_missing():
         game_over_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="game_over")
         exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit")
         restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart")
-        restart_button_turtle.onclick(lambda x, y: set_game_on(x, y, restart_button_turtle), add=False, btn=1)
+        restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle), add=False, btn=1)
         time.sleep(0.01)
         screen.update()
     elif ball_turtle.ycor() < (screen_height / -2) - 20:
@@ -174,7 +192,7 @@ def paddle_missing():
 #---------Running the game ----------------------#
 
 def start_game():
-    global game_is_on, start_button_turtle, player_turtle, ball_turtle, screen, ball_hit
+    global game_is_on, start_button_turtle, player_turtle, ball_turtle, screen, ball_hit, bricks_turtle
     print(game_is_on)
     if not game_is_on:
         time.sleep(0.01)
@@ -189,8 +207,10 @@ def start_game():
         paddle_movement()
 
         # ball_paddle_collision()
-        if checkCollisonPaddle(player_turtle) and not ball_hit:
+        if check_collision_paddle(player_turtle) and not ball_hit:
             ball_turtle.bounce("paddle")
+
+        hit_bricks(bricks_turtle.brick_list)
 
         ball_side_walls_collision()
 
@@ -202,7 +222,7 @@ def start_game():
 #-------------------------------------------------#
 
 def main():
-    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, restart_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle, screen_height, screen_width
+    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, restart_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle, screen_height, screen_width, bricks_turtle
     # ----------------Screen setup------------------------#
 
     # Set up the screen
@@ -252,9 +272,20 @@ def main():
     # breaks_turtle = TurtleBricks()
 
     # Add more bricks to the game
-    for i in range(0, 18):
-        brick = TurtleBricks()
-        brick.setx(-451.51 + (51 * i))
+    # for i in range(0, 18):
+    #     brick = TurtleBricks()
+    #     brick.setx(-451.51 + (51 * i))
+
+    # for i in range(0, 19):
+    #     brick = TurtleBricks()
+    #     # x = -462
+    #     # print(brick.xcor())
+    #     brick.setx(brick.xcor() + (51 * i))
+    #     print(screen_width // 51)
+
+    bricks_turtle = TurtleBricks(lines=3, size=screen_width // 51, width=screen_width, height=screen_height)
+    # print("grgrmnodvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+    # print(list(bricks_turtle.brick_list.keys())[0].xcor())
 
     #-----------------------------------------------#
 
@@ -262,7 +293,7 @@ def main():
     start_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="start")
     exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit")
 
-    start_button_turtle.onclick(lambda x, y: set_game_on(x, y, start_button_turtle), add=False, btn=1)
+    start_button_turtle.onclick(lambda x, y: begin_game(x, y, start_button_turtle), add=False, btn=1)
 
 
     #-----------------------------------------------#

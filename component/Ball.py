@@ -46,7 +46,7 @@ class TurtleBall(Turtle):
     def bounce_x(self):
         self.x_move *= -1
 
-    def bounce_off_top_or_paddle(self):
+    def bounce_ball(self):
         self.setheading(360 - self.heading())
 
     def reset_ball(self):
@@ -61,13 +61,13 @@ class TurtleBall(Turtle):
             if current_time - self.last_bounce_time > 1:
                 print("paddle")
                 print(self.heading())
-                self.bounce_off_top_or_paddle()
+                self.bounce_ball()
                 self.last_bounce_time = current_time
-        # top
-        elif context == "top":
-            print("paddle")
+        # top or brick
+        elif context == "top" or context == "brick":
+            print("top or brick")
             print(self.heading())
-            self.bounce_off_top_or_paddle()
+            self.bounce_ball()
         # when ball moving up
         elif 180 > self.heading() >= 0:
             self.setheading(180 - self.heading())
