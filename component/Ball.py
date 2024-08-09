@@ -15,7 +15,7 @@ class TurtleBall(Turtle):
 
         # first one left second one right
         # 45 to 135
-        self.ball_direction = (range(45, 135))
+        self.ball_direction = (45, 135)
 
         self.last_bounce_time = 0
 

@@ -13,19 +13,23 @@ class TurtleScores(Turtle):
         self.shape("turtle")
         self.color("white")
         self.penup()
-        self.load_high_scores()
+        self.load_high_score()
 
-    def save_scores(self):
+    def save_high_score(self):
         with open("component/scores.json", "w") as f:
             json.dump({"high_score": self.high_score}, f)
  
-    def load_high_scores(self):
+    def load_high_score(self):
         if os.path.exists("component/scores.json"):
             with open("component/scores.json", "r") as f:
                 scores = json.load(f)
             self.high_score = scores["high_score"]
         else:
-            self.save_scores()
+            self.save_high_score()
+
+    def reset_score(self):
+        self.score = 0
+        self.display_scores()
 
     def update_scores(self, new_score, new_high_score):
         self.high_score = new_high_score

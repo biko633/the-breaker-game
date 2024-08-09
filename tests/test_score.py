@@ -26,12 +26,12 @@ class TestScores:
 
     def test_changing_scores(self):
         self.score_turtle.update_scores(self.test_score, self.test_high_score)
-        self.score_turtle.save_scores()
+        self.score_turtle.save_high_score()
         assert self.score_turtle.score == self.test_score
         assert self.score_turtle.high_score == self.test_high_score
 
     def test_loading_high_score(self):
-        self.score_turtle.load_high_scores()
+        self.score_turtle.load_high_score()
         with open("component/scores.json", "r") as f:
             scores = json.load(f)
         assert self.score_turtle.high_score == scores["high_score"]

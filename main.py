@@ -16,9 +16,10 @@ screen_height = height
 
 # set the game on to true
 def restart_game(x, y, turtle):
-    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle
+    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle, score_turtle
     lives_turtle.reset_lives()
     bricks_turtle.reset_bricks()
+    score_turtle.reset_score()
     game_is_on = turtle.click(x, y)
 
 def begin_game(x, y, turtle):
@@ -102,10 +103,11 @@ def check_collision_brick(obj):
   return False
 
 def hit_bricks(brick_dictionary):
-    global ball_turtle
+    global ball_turtle, score_turtle
     for brick, index in brick_dictionary.items():
         if check_collision_brick(brick):
             ball_turtle.bounce("brick")
+            score_turtle.update_scores(new_score=score_turtle.score + 100, new_high_score=score_turtle.high_score)
             print(f"the index of the brick is -> {index}")      
             brick.clear()
             brick.hideturtle()
@@ -131,18 +133,10 @@ def paddle_missing():
         player_turtle.paddle_reset()
 #------------------------------------------------------#
 
-# # Update the scores
-# score_turtle.update_scores(2574, 455)
-# score_turtle.save_scores()
-
-# lives_turtle.update_lives()
-
-
-
 #---------Running the game ----------------------#
 
 def start_game():
-    global game_is_on, start_button_turtle, player_turtle, ball_turtle, screen, ball_hit, bricks_turtle
+    global game_is_on, start_button_turtle, player_turtle, ball_turtle, screen, ball_hit, bricks_turtle, score_turtle
     print(game_is_on)
     if not game_is_on:
         time.sleep(0.01)
@@ -171,7 +165,7 @@ def start_game():
 #-------------------------------------------------#
 
 def main():
-    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, restart_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle, screen_height, screen_width, bricks_turtle
+    global game_is_on, ball_hit, start_button_turtle, player_turtle, ball_turtle, screen, restart_button_turtle, background_turtle, exit_button_turtle, lives_turtle, breaks_turtle, screen_height, screen_width, bricks_turtle, score_turtle
     # ----------------Screen setup------------------------#
 
     # Set up the screen
