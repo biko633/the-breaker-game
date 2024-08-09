@@ -15,12 +15,19 @@ screen_height = height
 #-------------------Functions------------------------#
 
 # set the game on to true
-def restart_game(x, y, turtle):
+def restart_game(x, y, turtle, type):
     global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle, score_turtle
     lives_turtle.reset_lives()
     bricks_turtle.reset_bricks()
-    score_turtle.reset_score()
-    game_is_on = turtle.click(x, y)
+    ball_turtle.reset_ball()
+    if score_turtle.score > score_turtle.high_score:
+        score_turtle.update_scores(new_score=score_turtle.score, new_high_score=score_turtle.score)
+        score_turtle.save_high_score()
+    if type == "won":
+        game_is_on = turtle.click(x, y)
+    else:
+        score_turtle.reset_score()  
+        game_is_on = turtle.click(x, y)
 
 def begin_game(x, y, turtle):
     global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle
@@ -118,13 +125,13 @@ def hit_bricks(brick_dictionary):
 
 # Paddle missing ball  
 def paddle_missing():
-    global player_turtle, ball_turtle, lives_turtle, game_is_on, restart_button_turtle, screen_height
+    global player_turtle, ball_turtle, lives_turtle, game_is_on, restart_button_turtle, screen_height, score_turtle
     if lives_turtle.lives == 0:
         game_is_on = False
         game_over_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="game_over")
-        exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit")
+        exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit", score=score_turtle.score, high_score=score_turtle.high_score)
         restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart")
-        restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle), add=False, btn=1)
+        restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle, type="lost"), add=False, btn=1)
         time.sleep(0.01)
         screen.update()
     elif ball_turtle.ycor() < (screen_height / -2) - 20:
@@ -132,6 +139,20 @@ def paddle_missing():
         ball_turtle.reset_ball()
         player_turtle.paddle_reset()
 #------------------------------------------------------#
+
+#---------------Won game---------------------------#
+
+def won_game():
+    global player_turtle, ball_turtle, lives_turtle, game_is_on, restart_button_turtle, screen_height, bricks_turtle, score_turtle
+    if bricks_turtle.brick_list == {}:
+        game_is_on = False
+        game_won_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="game_won")
+        exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit", score=score_turtle.score, high_score=score_turtle.high_score)
+        restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart")
+        restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle, type="won"), add=False, btn=1)
+        time.sleep(0.01)
+        screen.update()
+#-------------------------------------------------#
 
 #---------Running the game ----------------------#
 
@@ -162,6 +183,8 @@ def start_game():
         reset_ball_hit()
 
         paddle_missing()
+
+        won_game()
 #-------------------------------------------------#
 
 def main():
