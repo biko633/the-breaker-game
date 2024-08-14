@@ -1,6 +1,7 @@
 from turtle import Turtle
 import turtle
 from component.utilities.Class_utility import get_all_instances
+from component.sound_effect import play_sound_effect
 import json
 
 # x = 700 and y = 600
@@ -45,6 +46,12 @@ class TurtleUserInterface(Turtle):
             self.write("Game Won", align="center", font=("Arial", 40, "bold"))
             print("game won is ")
             print(self.pos())
+        elif self.type == "continue":
+            self.shape("images/continue.gif")
+            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
+            print("continue is ")
+            print(self.pos())
+            self.onclick(self.click)
         else:
             self.shape("images/restart.gif")
             self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
@@ -52,6 +59,24 @@ class TurtleUserInterface(Turtle):
             print(self.pos())
             self.onclick(self.click)
         self.shapesize(stretch_wid=2, stretch_len=8)
+
+    def start_game(self):
+        pass
+
+    def exit_game(self):
+        pass
+
+    def game_over(self):
+        pass
+
+    def game_won(self):
+        pass
+
+    def continue_game(self):
+        pass
+
+    def restart_game(self):
+        pass
 
     def click(self, x, y):
         self.hideturtle()
@@ -61,8 +86,13 @@ class TurtleUserInterface(Turtle):
         elif self.type == "start":
             print("this is start")
             self.hide_all_buttons()
+            play_sound_effect("game-start")
             return True
         elif self.type == "restart":         
+            self.hide_all_buttons()
+            return True
+        elif self.type == "continue":
+            print("this is continue")
             self.hide_all_buttons()
             return True
         else:

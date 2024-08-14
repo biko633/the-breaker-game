@@ -16,7 +16,7 @@ screen_height = height
 
 # set the game on to true
 def restart_game(x, y, turtle, type):
-    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle, score_turtle
+    global game_is_on, start_button_turtle, restart_button_turtle, lives_turtle, bricks_turtle, score_turtle, continue_button_turtle
     lives_turtle.reset_lives()
     bricks_turtle.reset_bricks()
     ball_turtle.reset_ball()
@@ -26,7 +26,7 @@ def restart_game(x, y, turtle, type):
     if type == "won":
         game_is_on = turtle.click(x, y)
     else:
-        score_turtle.reset_score()  
+        score_turtle.reset_score()
         game_is_on = turtle.click(x, y)
 
 def begin_game(x, y, turtle):
@@ -130,7 +130,7 @@ def paddle_missing():
         game_is_on = False
         game_over_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="game_over")
         exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit", score=score_turtle.score, high_score=score_turtle.high_score)
-        restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart")
+        restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart", score=score_turtle.score, high_score=score_turtle.high_score)
         restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle, type="lost"), add=False, btn=1)
         time.sleep(0.01)
         screen.update()
@@ -143,13 +143,13 @@ def paddle_missing():
 #---------------Won game---------------------------#
 
 def won_game():
-    global player_turtle, ball_turtle, lives_turtle, game_is_on, restart_button_turtle, screen_height, bricks_turtle, score_turtle
+    global player_turtle, ball_turtle, lives_turtle, game_is_on, restart_button_turtle, screen_height, bricks_turtle, score_turtle, continue_button_turtle
     if bricks_turtle.brick_list == {}:
         game_is_on = False
         game_won_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="game_won")
         exit_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="exit", score=score_turtle.score, high_score=score_turtle.high_score)
-        restart_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="restart")
-        restart_button_turtle.onclick(lambda x, y: restart_game(x, y, restart_button_turtle, type="won"), add=False, btn=1)
+        continue_button_turtle = TurtleUserInterface(x=screen_width / 2, y=screen_height / 2, type="continue", score=score_turtle.score, high_score=score_turtle.high_score)
+        continue_button_turtle.onclick(lambda x, y: restart_game(x, y, continue_button_turtle, type="won"), add=False, btn=1)
         time.sleep(0.01)
         screen.update()
 #-------------------------------------------------#
@@ -196,6 +196,7 @@ def main():
     screen.register_shape("images/start.gif")
     screen.register_shape("images/exit.gif")
     screen.register_shape("images/restart.gif")
+    screen.register_shape("images/continue.gif")
     screen.setup(width=screen_width, height=screen_height)
     screen.tracer(0)
 

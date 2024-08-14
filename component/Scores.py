@@ -53,11 +53,3 @@ class TurtleScores(Turtle):
         self.left(90)
         self.backward((self.getscreen().window_height() / 2) - 35)
         self.write(f"Highest Score: {self.high_score}", align="right", font=("Arial", 20, "bold"))
-        
-
-
-#### SCORE TURTLE ####
-
-
-
-##################
