@@ -13,107 +13,83 @@ import json
 # onclick need x and y even if i don't use it
 
 class TurtleUserInterface(Turtle):
-    def __init__(self, x, y, type, score=0, high_score=0):
+    def __init__(self, x, y, type):
         super().__init__()
         self.penup()
-        self.is_hidden = False
-        self.type = type
-        self.score = score
-        self.high_score = high_score
-        if self.type == "start":
-            self.shape("images/start.gif")
-            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
-            print("start is ")
-            print(self.pos())
-            self.onclick(self.click)
-        elif self.type == "exit":
-            self.shape("images/exit.gif")
-            self.goto(x / 3 + 50, y / 3 * -1 - 50) 
-            print("exit is ")
-            print(self.pos())
-            self.onclick(self.click)
-        elif self.type == "game_over":
-            self.hideturtle()
-            self.color("#de1b4a")
-            self.goto(0, 0)
-            self.write("Game Over", align="center", font=("Arial", 40, "bold"))
-            print("game over is ")
-            print(self.pos())
-        elif self.type == "game_won":
-            self.hideturtle()
-            self.color("#de1b4a")
-            self.goto(0, 0)
-            self.write("Game Won", align="center", font=("Arial", 40, "bold"))
-            print("game won is ")
-            print(self.pos())
-        elif self.type == "continue":
-            self.shape("images/continue.gif")
-            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
-            print("continue is ")
-            print(self.pos())
-            self.onclick(self.click)
-        else:
-            self.shape("images/restart.gif")
-            self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
-            print("restart is ")
-            print(self.pos())
-            self.onclick(self.click)
         self.shapesize(stretch_wid=2, stretch_len=8)
+        if type == "start":
+            self.start_button_turtle(x, y, type)
+        elif type == "exit":
+            self.exit_button_turtle(x, y, type)
+        elif type == "restart":
+            self.restart_button_turtle(x, y, type)
+        elif type == "continue":
+            self.continue_button_turtle(x, y, type)
+        elif type == "game_over":
+            self.game_over_turtle(type)
+        elif type == "game_won":
+            self.game_won_turtle(type)
 
-    def start_game(self):
-        pass
+    def start_button_turtle(self, x, y, type):
+        self.type = type
+        self.shape("images/start.gif")
+        self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
+        self.onclick(self.click)
 
-    def exit_game(self):
-        pass
+    def exit_button_turtle(self, x, y, type):
+        self.type = type
+        self.shape("images/exit.gif")
+        self.goto(x / 3 + 50, y / 3 * -1 - 50)
+        self.onclick(self.click)
 
-    def game_over(self):
-        pass
+    def game_over_turtle(self, type):
+        self.type = type
+        self.hideturtle()
+        self.color("#de1b4a")
+        self.goto(0, 0)
 
-    def game_won(self):
-        pass
+    def game_won_turtle(self, type):
+        self.type = type
+        self.hideturtle()
+        self.color("#de1b4a")
+        self.goto(0, 0)
 
-    def continue_game(self):
-        pass
+    def continue_button_turtle(self, x, y, type):
+        self.type = type
+        self.shape("images/continue.gif")
+        self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
+        self.onclick(self.click)
 
-    def restart_game(self):
-        pass
+    def restart_button_turtle(self, x, y, type):
+        self.type = type
+        self.shape("images/restart.gif")
+        self.goto(x / 3 * -1 - 50, y / 3 * -1 - 50)
+        self.onclick(self.click)
 
+    # x and y is needed so the user can click the button
+    # click return true so game_is_on = True so the game can start or restart
     def click(self, x, y):
         self.hideturtle()
-        self.is_hidden = True
-        if self.type == "exit":
-            self.exit_game()
-        elif self.type == "start":
-            print("this is start")
-            self.hide_all_buttons()
+        self.hide_all_buttons()
+        if self.type == "start":
             play_sound_effect("game-start")
             return True
-        elif self.type == "restart":         
-            self.hide_all_buttons()
+        elif self.type == "restart":        
             return True
         elif self.type == "continue":
-            print("this is continue")
-            self.hide_all_buttons()
             return True
         else:
-            print("this is not a button")
+            print("this is exit a button")
             return False
 
-    def exit_game(self):
-        self.check_high_score()
-        print(self.score)
-        print(self.high_score)
+    def exit_game(self, x, y):
         turtle.bye()
 
-    def check_high_score(self):
-        if self.score > self.high_score:
-            print("new high score")
-            with open("component/scores.json", "r+") as f:              
-                data = json.load(f)
-                data["high_score"] = self.score
-                f.seek(0)
-                json.dump(data, f)
-                f.truncate()
+    def game_end_message(self):
+        if self.type == "game_over":
+            self.write("Game Over", align="center", font=("Arial", 40, "bold"))
+        elif self.type == "game_won":
+            self.write("Game Won", align="center", font=("Arial", 40, "bold"))
 
     def hide_all_buttons(self):
         all_buttons = get_all_instances(TurtleUserInterface)

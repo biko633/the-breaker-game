@@ -27,6 +27,12 @@ class TurtleScores(Turtle):
         else:
             self.save_high_score()
 
+    def check_high_score(self):
+        if self.score > self.high_score:
+            return True
+        else:
+            return False
+
     def reset_score(self):
         self.score = 0
         self.display_scores()
@@ -35,6 +41,9 @@ class TurtleScores(Turtle):
         self.high_score = new_high_score
         self.score = new_score
         self.display_scores()
+
+    def update_high_score(self, new_score):
+        self.high_score = new_score
 
     def display_scores(self):
         # Write the score on the screen
