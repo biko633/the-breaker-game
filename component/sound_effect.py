@@ -1,19 +1,27 @@
-from playsound import playsound
+import pygame
 from threading import Thread
 
+# Initialize the mixer module
+pygame.mixer.init()
 
+# Preload sound effects
 sounds_effect = {
-    "bounce": "sounds/bounce.mp3",
-    "hit-brick": "sounds/hit-brick.mp3",
-    "lose-life": "sounds/lose-life.mp3",
-    "game-start": "sounds/game-start.mp3",
-    "game-over": "sounds/game-over.mp3",
-    "game-won": "sounds/game-won.mp3",
+    "bounce": pygame.mixer.Sound("sounds/bounce.mp3"),
+    "hit-brick": pygame.mixer.Sound("sounds/hit-brick.mp3"),
+    "lose-life": pygame.mixer.Sound("sounds/lose-life.mp3"),
+    "game-start": pygame.mixer.Sound("sounds/game-start.mp3"),
+    "game-over": pygame.mixer.Sound("sounds/game-over.mp3"),
+    "game-won-new": pygame.mixer.Sound("sounds/game-won-new.mp3")
 }
-def trigger_sound(sound_path):
-    playsound(sound_path)
 
 def play_sound_effect(sound_name):
-    sound_path = sounds_effect[sound_name]
-    thread = Thread(target=lambda: trigger_sound(sound_path))
+    def play():
+        try:
+            sounds_effect[sound_name].play()
+        except KeyError:
+            print(f"Sound '{sound_name}' not found.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+    
+    thread = Thread(target=play)
     thread.start()

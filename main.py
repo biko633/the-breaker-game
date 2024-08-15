@@ -6,6 +6,7 @@ from component.Player_paddle import TurtlePlayerPaddle
 from component.Ball import TurtleBall
 from component.bricks import TurtleBricks
 from component.UserInterface import TurtleUserInterface
+from component.sound_effect import play_sound_effect
 from Screen_Info import width, height
 import time
 
@@ -49,6 +50,7 @@ def main():
         def restart_game(self, x, y, turtle, type):
             self.bricks_turtle.reset_bricks()
             self.ball_turtle.reset_ball()
+            self.player_turtle.paddle_reset()
             if type == "won":
                 self.game_is_on = turtle.click(x, y)
             else:
@@ -79,6 +81,7 @@ def main():
                 self.screen.onkeypress(self.player_turtle.go_right, "Right")
                 self.screen.onkeypress(self.player_turtle.go_left, "a")
                 self.screen.onkeypress(self.player_turtle.go_right, "d")
+                # self.screen.onkeypress(self.bricks_turtle.rem_all_bricks, "x")
                 return
             
         def stop_paddle_movement(self):
@@ -95,6 +98,7 @@ def main():
                 #Detect collision with right and left walls
             if self.ball_turtle.xcor() > (self.screen_width / 2) - 30 or self.ball_turtle.xcor() < (self.screen_width / -2) + 26:
                 self.ball_turtle.bounce("side")
+                play_sound_effect("bounce")
                 return
             
 
@@ -103,6 +107,7 @@ def main():
                 #Detect collision with top wall
             if self.ball_turtle.ycor() > self.screen_height / 2 - 72:
                 self.ball_turtle.bounce("top")
+                play_sound_effect("bounce")
                 return
             
 
@@ -133,6 +138,7 @@ def main():
             for brick, index in brick_dictionary.items():
                 if self.check_collision_brick(brick):
                     self.ball_turtle.bounce("brick")
+                    play_sound_effect("hit-brick")
                     self.score_turtle.update_scores(new_score=self.score_turtle.score + 100, new_high_score=self.score_turtle.high_score)
                     print(f"the index of the brick is -> {index}")      
                     brick.clear()
@@ -145,6 +151,7 @@ def main():
         # Paddle missing ball  
         def paddle_missing(self):
             if self.lives_turtle.lives == 0:
+                play_sound_effect("game-over")
                 self.game_is_on = False
                 self.game_over_turtle.game_end_message()
                 self.exit_button_turtle.showturtle()
@@ -153,6 +160,7 @@ def main():
                 time.sleep(0.01)
                 self.screen.update()
             elif self.ball_turtle.ycor() < (self.screen_height / -2) - 20:
+                play_sound_effect("lose-life")
                 self.lives_turtle.update_lives()
                 self.ball_turtle.reset_ball()
                 self.player_turtle.paddle_reset()
@@ -167,6 +175,7 @@ def main():
                 self.exit_button_turtle.showturtle()
                 self.continue_button_turtle.showturtle()
                 self.save_high_score()
+                play_sound_effect("game-won-new")
                 time.sleep(0.01)
                 self.screen.update()
         #-------------------------------------------------#
@@ -258,6 +267,7 @@ def main():
                 self.paddle_movement()
 
                 if self.check_collision_paddle(self.player_turtle) and not self.ball_hit:
+                    play_sound_effect("bounce")
                     self.ball_turtle.bounce("paddle")
 
                 self.hit_bricks(self.bricks_turtle.brick_list)

@@ -53,3 +53,12 @@ class TurtleBricks():
         colors = ["#059212", "#06D001", "#9BEC00", "#F3FF90", "#FDA403", "#E8751A", "#898121", "#E5C287", "#51EAEA", "#AA26DA", "#36BA98", "#FFFF80", "#B784B7", "#F8DE22", "#D4D925"]
         color = random.choice(colors)
         return color
+    
+    # def rem_all_bricks(self):
+    #     for brick in self.brick_list:
+    #         brick.clear()
+    #         brick.hideturtle()
+    #         del brick
+
+    #     self.brick_list = {}
+    #     self.count = 0

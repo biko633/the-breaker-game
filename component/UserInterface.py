@@ -40,7 +40,6 @@ class TurtleUserInterface(Turtle):
         self.type = type
         self.shape("images/exit.gif")
         self.goto(x / 3 + 50, y / 3 * -1 - 50)
-        self.onclick(self.click)
 
     def game_over_turtle(self, type):
         self.type = type
@@ -71,16 +70,8 @@ class TurtleUserInterface(Turtle):
     def click(self, x, y):
         self.hideturtle()
         self.hide_all_buttons()
-        if self.type == "start":
-            play_sound_effect("game-start")
-            return True
-        elif self.type == "restart":        
-            return True
-        elif self.type == "continue":
-            return True
-        else:
-            print("this is exit a button")
-            return False
+        play_sound_effect("game-start")
+        return True
 
     def exit_game(self, x, y):
         turtle.bye()
