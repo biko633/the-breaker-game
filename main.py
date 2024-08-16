@@ -157,6 +157,7 @@ def main():
                 self.exit_button_turtle.showturtle()
                 self.restart_button_turtle.showturtle()
                 self.save_high_score()
+                self.score_turtle.display_scores()
                 time.sleep(0.01)
                 self.screen.update()
             elif self.ball_turtle.ycor() < (self.screen_height / -2) - 20:
@@ -175,6 +176,7 @@ def main():
                 self.exit_button_turtle.showturtle()
                 self.continue_button_turtle.showturtle()
                 self.save_high_score()
+                self.score_turtle.display_scores()
                 play_sound_effect("game-won-new")
                 time.sleep(0.01)
                 self.screen.update()
