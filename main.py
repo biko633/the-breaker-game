@@ -9,11 +9,10 @@ from component.UserInterface import TurtleUserInterface
 from component.sound_effect import play_sound_effect
 from Screen_Info import width, height
 import time
-import asyncio
 
 
 #---------Running the game ----------------------#
-async def main():
+def main():
     class Game:
         def __init__(self):
             self.game_is_on = False
@@ -293,6 +292,6 @@ async def main():
             game.start_game()
 
     game.screen.mainloop()
-    await asyncio.sleep(0)
 
-asyncio.run(main())
+if __name__ == "__main__":
+    main()
