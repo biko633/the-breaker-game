@@ -13,29 +13,37 @@ class TurtleScores(Turtle):
         self.shape("turtle")
         self.color("white")
         self.penup()
-        self.load_high_scores()
+        self.load_high_score()
 
-
-
-
-
-    def save_scores(self):
+    def save_high_score(self):
         with open("component/scores.json", "w") as f:
             json.dump({"high_score": self.high_score}, f)
-
-    
-    def load_high_scores(self):
+ 
+    def load_high_score(self):
         if os.path.exists("component/scores.json"):
             with open("component/scores.json", "r") as f:
                 scores = json.load(f)
             self.high_score = scores["high_score"]
         else:
-            self.save_scores()
+            self.save_high_score()
+
+    def check_high_score(self):
+        if self.score > self.high_score:
+            return True
+        else:
+            return False
+
+    def reset_score(self):
+        self.score = 0
+        self.display_scores()
 
     def update_scores(self, new_score, new_high_score):
         self.high_score = new_high_score
         self.score = new_score
         self.display_scores()
+
+    def update_high_score(self, new_score):
+        self.high_score = new_score
 
     def display_scores(self):
         # Write the score on the screen
@@ -54,11 +62,3 @@ class TurtleScores(Turtle):
         self.left(90)
         self.backward((self.getscreen().window_height() / 2) - 35)
         self.write(f"Highest Score: {self.high_score}", align="right", font=("Arial", 20, "bold"))
-        
-
-
-#### SCORE TURTLE ####
-
-
-
-##################
