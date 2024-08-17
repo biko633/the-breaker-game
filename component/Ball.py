@@ -36,14 +36,14 @@ class TurtleBall(Turtle):
         if context == "paddle":
             current_time = time.time()
             if current_time - self.last_bounce_time > 1:
-                print("paddle")
-                print(self.heading())
+                # print("paddle")
+                # print(self.heading())
                 self.bounce_ball()
                 self.last_bounce_time = current_time
         # top or brick
         elif context == "top" or context == "brick":
-            print("top or brick")
-            print(self.heading())
+            # print("top or brick")
+            # print(self.heading())
             self.bounce_ball()
         # when ball moving up
         elif 180 > self.heading() >= 0:

@@ -9,10 +9,11 @@ from component.UserInterface import TurtleUserInterface
 from component.sound_effect import play_sound_effect
 from Screen_Info import width, height
 import time
+import asyncio
 
 
 #---------Running the game ----------------------#
-def main():
+async def main():
     class Game:
         def __init__(self):
             self.game_is_on = False
@@ -130,7 +131,7 @@ def main():
         # Ball collision with the bricks
         def check_collision_brick(self, obj):
             if abs(self.ball_turtle.xcor() - obj.xcor()) < 40 and obj.ycor() <= self.ball_turtle.ycor() + 10 <= obj.ycor() + 10 :
-                print("collided with the brick:", obj)
+                # print("collided with the brick:", obj)
                 return True
             return False
 
@@ -140,7 +141,7 @@ def main():
                     self.ball_turtle.bounce("brick")
                     play_sound_effect("hit-brick")
                     self.score_turtle.update_scores(new_score=self.score_turtle.score + 100, new_high_score=self.score_turtle.high_score)
-                    print(f"the index of the brick is -> {index}")      
+                    # print(f"the index of the brick is -> {index}")      
                     brick.clear()
                     brick.hideturtle()
                     del brick_dictionary[brick]
@@ -255,7 +256,7 @@ def main():
         #-----------------------------------------------------#
 
         def start_game(self):
-            print(self.game_is_on)
+            # print(self.game_is_on)
             if not self.game_is_on:
                 time.sleep(0.01)
                 self.screen.update()
@@ -292,6 +293,6 @@ def main():
             game.start_game()
 
     game.screen.mainloop()
+    await asyncio.sleep(0)
 
-if __name__ == "__main__":
-    main()
+asyncio.run(main())
