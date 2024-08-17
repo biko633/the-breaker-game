@@ -182,6 +182,9 @@ def main():
                 self.screen.update()
         #-------------------------------------------------#
 
+        def close_game(self):
+            self.app_on = False
+            self.game_is_on = False
 
         def setup_game(self):
             # Set up the screen
@@ -198,6 +201,9 @@ def main():
 
             # Disable the resizing of the screen
             self.screen.cv._rootwindow.resizable(False, False)
+
+            # Set up the close game to x button on the top right
+            self.screen.getcanvas().winfo_toplevel().protocol("WM_DELETE_WINDOW", self.close_game)
 
         # ----------Create the background----------
             self.background_turtle = TurtleBackground()
@@ -291,7 +297,8 @@ def main():
     while game.app_on:
             game.start_game()
 
-    game.screen.mainloop()
+    # game.screen.mainloop()
+    game.screen.bye()
 
 if __name__ == "__main__":
     main()
