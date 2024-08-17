@@ -12,6 +12,10 @@ dist/
 .pytest_cache/
 
 component/__pycache__/
+component/utilities/__pycache__/
 tests/__pycache__/
 
 *tests/
+
+tempCodeRunnerFile.py
+__pycache__
